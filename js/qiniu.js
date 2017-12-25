@@ -177,7 +177,7 @@
             var qiniuCollectUploadLogUrl = "https://uplog.qbox.me/log/3";
 
             /**
-             * { log: string, status: number }[] status: 0 待处理， 1 正在发送， 2 发送完毕  
+             * { log: string, status: number }[] status: 0 待处理， 1 正在发送， 2 发送完毕
              */
             var queue = [];
             var TaskStatus = {
@@ -188,14 +188,14 @@
 
             /**
              * send logs to statistics server
-             * 
+             *
              * @param {number} code status code
              * @param {string} req_id request id
-             * @param {string} host 
+             * @param {string} host
              * @param {string} remote_ip
-             * @param {string} port 
-             * @param {string} duration 
-             * @param {string} up_time 
+             * @param {string} port
+             * @param {string} duration
+             * @param {string} up_time
              * @param {number} bytes_sent uploaded size (bytes)
              * @param {string} up_type js sdk runtime: html5, html4, flash
              * @param {number} file_size file total size (bytes)
@@ -1542,14 +1542,15 @@
                 // add cancel log
                 if (!op.disable_statistics_report) {
                     for (var i = 0; i < files.length; i++) {
+                        var startAt = files[i]._start_at ? files[i]._start_at.getTime() : nowTime.getTime();//min中全部删除
                         statisticsLogger.log(
                             ExtraErrors.Cancelled,
                             undefined,
                             getDomainFromUrl(up.settings.url),
                             undefined,
                             getPortFromUrl(up.settings.url),
-                            (nowTime.getTime() - files[i]._start_at.getTime())/1000,
-                            files[i]._start_at.getTime()/1000,
+                            (nowTime.getTime() - startAt)/1000,
+                            startAt/1000,
                             files[i].size * files[i].percent / 100,
                             "jssdk-" + up.runtime,
                             files[i].size
